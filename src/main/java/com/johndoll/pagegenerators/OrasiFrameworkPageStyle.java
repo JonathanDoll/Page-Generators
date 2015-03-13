@@ -14,7 +14,7 @@ public class OrasiFrameworkPageStyle {
 
     public OrasiFrameworkPageStyle(String file, String destination) throws FileNotFoundException, IOException {
         ExcelReader excel = new ExcelReader(file);
-        ArrayList decVars = new ArrayList();
+        ArrayList <String> decVars = new ArrayList<String>();
         for (int j = 0; j < excel.getSheetCount(); j++) {
             excel.setSheet(j);
             String fileName = excel.getCellData(0, 0);
@@ -32,11 +32,24 @@ public class OrasiFrameworkPageStyle {
             fout.write(("import com.orasi.core.interfaces.*;\n\n").getBytes());
             fout.write(("public class " + fileName + "{\n\n").getBytes());
             
+            int len = 0;
+            boolean constFound = false;
+            
+            if(!excel.getCellData(0, 2).equals("")){
+                fout.write(("    private final String " + excel.getCellData(0, 2) + " = \"" + excel.getCellData(0, 3) + "\";\n\n").getBytes());
+                len = excel.getCellData(0,2).length();
+                constFound = true;
+            }
             
             int row = 2;
-            while(excel.getColumnCount(row) == 4){
+            while(excel.getColumnCount(row) >= 4){
                 decVars.add(excel.getCellData(row, 0));
-                fout.write(("    @FindBy(" + excel.getCellData(row, 1) + " = \"" + excel.getCellData(row, 2) + "\")\n").getBytes());
+                if(excel.getCellData(row, 2).contains(excel.getCellData(0, 2)) && constFound){
+                    fout.write(("    @FindBy(" + excel.getCellData(row, 1) + " = " + excel.getCellData(0, 2) + " + \"" + excel.getCellData(row, 2).substring(len) + "\")\n").getBytes());
+                }else{
+                    fout.write(("    @FindBy(" + excel.getCellData(row, 1) + " = \"" + excel.getCellData(row, 2) + "\")\n").getBytes());
+                }
+                
                 fout.write(("    private " + excel.getCellData(row, 3) + " " + excel.getCellData(row, 0) + ";\n\n").getBytes());
                 row++;
             }
