@@ -17,6 +17,7 @@ public class OrasiFrameworkPageStyle {
         ArrayList <String> decVars = new ArrayList<String>();
         for (int j = 0; j < excel.getSheetCount(); j++) {
             excel.setSheet(j);
+            if(excel.getCellData(0, 1).equalsIgnoreCase("skip")) continue;
             String fileName = excel.getCellData(0, 0);
             String fold = destination + "\\";
             fold += excel.getCellData(1, 0).replace(".", "\\");
