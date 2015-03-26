@@ -62,17 +62,17 @@ public class OrasiFrameworkPageStyle {
             fout.write(("        ElementFactory.initElements(driver, this);\n    }\n\n").getBytes());
             
             fout.write(("    public boolean pageLoaded(){\n").getBytes());
-            fout.write(("        return new PageLoaded().isPageHTMLLoaded(this.getClass(), driver, " + excel.getCellData(row, 0) + ");\n    }\n\n").getBytes());
+            fout.write(("        return new PageLoaded().isDomComplete(driver);\n    }\n\n").getBytes());
             fout.write(("").getBytes());
             
             fout.write(("    public boolean pageLoaded(Element element){\n").getBytes());
-            fout.write(("        return new PageLoaded().isPageHTMLLoaded(this.getClass(), driver, element);\n    }\n\n").getBytes());
+            fout.write(("        return new PageLoaded().isElementLoaded(this.getClass(), driver, element);\n    }\n\n").getBytes());
             fout.write(("").getBytes());
             
             fout.write(("    public " + fileName + " initialize(){\n").getBytes());
             fout.write(("        return ElementFactory.initElements(driver, this.getClass());\n    }\n\n").getBytes());
             
-            row++;
+            //row++;
             
             while(excel.getColumnCount(row) == 2){
                 fout.write(("    public void " + excel.getCellData(row, 0)).getBytes());
